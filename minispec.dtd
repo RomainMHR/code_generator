@@ -1,0 +1,19 @@
+<!ELEMENT model (entity*)>
+<!ATTLIST model 
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT entity (attribute*)>
+<!ATTLIST entity 
+    name CDATA #REQUIRED
+    extends CDATA #IMPLIED
+>
+
+<!ELEMENT attribute EMPTY>
+<!ATTLIST attribute 
+    name CDATA #REQUIRED
+    type CDATA #REQUIRED
+    collection (List|Set|Bag|Array) #IMPLIED
+    min CDATA #IMPLIED
+    max CDATA #IMPLIED
+>

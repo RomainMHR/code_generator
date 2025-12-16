@@ -1,0 +1,22 @@
+<!DOCTYPE model SYSTEM "minispec.dtd">
+<model name="minispec.space">
+
+    <entity name="EnginSpatial">
+        <attribute name="id" type="Integer"/>
+        <attribute name="poids" type="Integer"/>
+    </entity>
+
+    <entity name="Satellite" extends="EnginSpatial">
+        <attribute name="nom" type="String"/>
+        <attribute name="parent" type="Flotte"/>
+    </entity>
+
+    <entity name="Fusée" extends="EnginSpatial">
+        <attribute name="puissance" type="Integer"/>
+    </entity>
+
+    <entity name="Flotte">
+        <attribute name="vaisseaux" type="EnginSpatial" collection="List" min="0" max="50"/>
+    </entity>
+
+</model>

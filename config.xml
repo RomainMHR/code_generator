@@ -1,0 +1,10 @@
+<java-code>
+    <model name="minispec.space" package="com.monprojet.simulation"/>
+
+    <primitive name="String" type="String"/>
+    <primitive name="Integer" type="Integer"/>
+    <primitive name="List" type="ArrayList" package="java.util.ArrayList"/>
+    <primitive name="Array" type="Array" package="m2tiil.Array"/>
+    <primitive name="Bag" type="Bag" package="m2tiil.Bag"/>
+    <primitive name="Set" type="HashSet" package="java.util.HashSet"/>
+</java-code>
