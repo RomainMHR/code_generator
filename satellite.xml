@@ -4,6 +4,7 @@
     <entity name="EnginSpatial">
         <attribute name="id" type="Integer"/>
         <attribute name="poids" type="Integer"/>
+
     </entity>
 
     <entity name="Satellite" extends="EnginSpatial">
@@ -17,6 +18,7 @@
 
     <entity name="Flotte">
         <attribute name="vaisseaux" type="EnginSpatial" collection="List" min="0" max="50"/>
+    	<attribute name="fusee" type="Fusée" collection="Array" min="2" max="2"/>
     </entity>
 
 </model>
