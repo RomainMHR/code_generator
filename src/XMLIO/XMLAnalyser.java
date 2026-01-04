@@ -2,6 +2,9 @@ package XMLIO;
 
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
+
+import generation.GeneratorConfig;
+
 import java.io.*;
 import java.util.*;
 
@@ -10,8 +13,12 @@ import metaModel.Entity;
 import type.*; 
 
 public class XMLAnalyser {
+	
+	private GeneratorConfig config;
 
-    public XMLAnalyser() { }
+    public XMLAnalyser(GeneratorConfig config) {
+    	this.config = config;
+    }
 
     public Model getModelFromInputStream(InputStream stream) {
         try {
@@ -152,7 +159,15 @@ public class XMLAnalyser {
     }
 
     private boolean isPrimitive(String typeName) {
+        // Stratégie : On regarde d'abord dans la config.
+        if (this.config != null && this.config.isKnownType(typeName)) {
+            return true;
+        }
+        return false;
+        /*
+        // OPTIONNEL : On garde une sécurité "en dur" pour les types de base
+        // au cas où le fichier config.xml serait incomplet.
         return typeName.equals("String") || typeName.equals("Integer") 
-            || typeName.equals("Boolean") || typeName.equals("Double");
+            || typeName.equals("Boolean") || typeName.equals("Double");*/
     }
 }

@@ -11,7 +11,7 @@ public class Main {
         config.loadConfigFile(new File("config.xml"));
 
         // Chargement modèle
-        XMLAnalyser analyser = new XMLAnalyser();
+        XMLAnalyser analyser = new XMLAnalyser(config);
         Model model = analyser.getModelFromFile(new File("satellite.xml"));
         
         if (model != null) {

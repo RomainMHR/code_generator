@@ -62,4 +62,8 @@ public class GeneratorConfig {
     public JavaTypeDefinition getJavaType(String minispecTypeName) {
         return typeDefinitions.get(minispecTypeName);
     }
+    
+    public boolean isKnownType(String typeName) {
+        return typeDefinitions.containsKey(typeName);
+    }
 }
