@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Entity implements MinispecElement {
 	private String name;
-	private String parentName; // Pour l'héritage (Partie 4)
+	private String parentName; // Pour héritage
 	private List<Attribute> attributes;
 
 	public Entity() {

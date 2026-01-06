@@ -23,18 +23,18 @@ public class JavaGenerator extends Visitor {
     @Override
     public void visitModel(Model model) {
         for (Entity entity : model.getEntities()) {
-            visitEntityInModel(entity, model.getName());
-            buffer.append("\n----------------------\n");
+            visitEntityModel(entity, model.getName());
+            buffer.append("\n---\n");
         }
     }
     
     private void generateFullConstructor(Entity entity) {
         List<Attribute> attrs = entity.getAttributes();
         if (attrs.isEmpty()) {
-            return; // Le constructeur par défaut suffit
+            return;
         }
         
-        buffer.append("    public ").append(entity.getName()).append("(");
+        buffer.append("  public ").append(entity.getName()).append("(");
         
         // Paramètres
         for (int i = 0; i < attrs.size(); i++) {
@@ -49,14 +49,14 @@ public class JavaGenerator extends Visitor {
         
         // Affectations
         for (Attribute attr : attrs) {
-            buffer.append("        this.").append(attr.getName())
+            buffer.append("      this.").append(attr.getName())
                   .append(" = ").append(attr.getName()).append(";\n");
         }
         
-        buffer.append("    }\n\n");
+        buffer.append("  }\n\n");
     }
 
-    public void visitEntityInModel(Entity entity, String modelName) {
+    public void visitEntityModel(Entity entity, String modelName) {
         String javaPackage = config.getJavaPackageForModel(modelName);
         
         if (javaPackage != null && !javaPackage.isEmpty()) {
@@ -80,7 +80,7 @@ public class JavaGenerator extends Visitor {
         buffer.append("\n");
 
         //Constructeur vide
-        buffer.append("    public ").append(entity.getName()).append("() { }\n\n");
+        buffer.append("  public ").append(entity.getName()).append("() { }\n\n");
         
         //Constructeur complet
         generateFullConstructor(entity);
@@ -127,7 +127,6 @@ public class JavaGenerator extends Visitor {
                 imports.add(def.javaPackage);
             }
 
-            // Récursivité : on continue avec le type interne
             collectImports(col.getElementType(), imports);
         }
         // Si ENTITY
@@ -151,18 +150,19 @@ public class JavaGenerator extends Visitor {
         String name = attr.getName();
 
         if (!generateMethods) {
-            buffer.append("    private ").append(typeName).append(" ").append(name).append(";\n");
+            buffer.append("  private ").append(typeName).append(" ").append(name).append(";\n");
         } else {
             String capName = name.substring(0, 1).toUpperCase() + name.substring(1);
-            buffer.append("    public ").append(typeName).append(" get").append(capName).append("() {\n");
-            buffer.append("        return this.").append(name).append(";\n");
-            buffer.append("    }\n");
-            buffer.append("    public void set").append(capName).append("(").append(typeName).append(" ").append(name).append(") {\n");
-            buffer.append("        this.").append(name).append(" = ").append(name).append(";\n");
-            buffer.append("    }\n\n");
+            buffer.append("  public ").append(typeName).append(" get").append(capName).append("() {\n");
+            buffer.append("      return this.").append(name).append(";\n");
+            buffer.append("  }\n");
+            buffer.append("  public void set").append(capName).append("(").append(typeName).append(" ").append(name).append(") {\n");
+            buffer.append("      this.").append(name).append(" = ").append(name).append(";\n");
+            buffer.append("  }\n\n");
         }
     }
 
+    // Résolution du type Java à partir du Type méta-modèle
     private String resolveJavaTypeName(Type type) {
         Type effectiveType = getEffectiveType(type);
 
@@ -173,11 +173,8 @@ public class JavaGenerator extends Visitor {
             String rawName = col.getName();
             String kindName = rawName.contains("<") ? rawName.substring(0, rawName.indexOf('<')) : rawName;
             
-            GeneratorConfig.JavaTypeDefinition def = config.getJavaType(kindName);
-            if (def == null) {
-                String titleCase = kindName.charAt(0) + kindName.substring(1).toLowerCase();
-                def = config.getJavaType(titleCase);
-            }
+            String titleCase = kindName.charAt(0) + kindName.substring(1).toLowerCase();
+            GeneratorConfig.JavaTypeDefinition def = config.getJavaType(titleCase);
             
             String containerType = (def != null) ? def.javaType : kindName;
             

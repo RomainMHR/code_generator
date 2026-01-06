@@ -2,6 +2,7 @@ package XMLIO;
 
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import generation.GeneratorConfig;
 
@@ -29,10 +30,18 @@ public class XMLAnalyser {
             
             return getModelFromDocument(document);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+
+		} catch (ParserConfigurationException pce) {
+			System.out.println("Erreur de configuration du parseur DOM");
+			System.out.println("lors de l'appel à fabrique.newDocumentBuilder();");
+		} catch (SAXException se) {
+			System.out.println("Erreur lors du parsing du document");
+			System.out.println("lors de l'appel à construteur.parse(xml)");
+		} catch (IOException ioe) {
+			System.out.println("Erreur d'entrée/sortie");
+			System.out.println("lors de l'appel à construteur.parse(xml)");
+		}
+		return null;
     }
     
     public Model getModelFromFile(File file) {      
@@ -104,9 +113,9 @@ public class XMLAnalyser {
 
         if (colType != null && !colType.isEmpty()) {
             try {
-                CollectionType.Kind kind = CollectionType.Kind.valueOf(colType.toUpperCase());
+                CollectionType.Format kind = CollectionType.Format.valueOf(colType.toUpperCase());
                 Integer min = (minStr == null || minStr.isEmpty()) ? null : Integer.parseInt(minStr);
-                Integer max = (maxStr == null || maxStr.isEmpty() || maxStr.equals("*")) ? null : Integer.parseInt(maxStr);
+                Integer max = (maxStr == null || maxStr.isEmpty()) ? null : Integer.parseInt(maxStr);
                 
                 return new CollectionType(kind, coreType, min, max);
             } catch (Exception e) {

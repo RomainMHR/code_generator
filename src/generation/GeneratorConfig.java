@@ -11,10 +11,10 @@ import org.w3c.dom.NodeList;
 
 public class GeneratorConfig {
 
-    // Map : Nom du Modèle Minispec -> Package Java
+    // Nom Modèle Minispec -> Package Java dans config
     private Map<String, String> modelPackages = new HashMap<>();
 
-    // Map : Nom du Type Minispec -> Définition Java (Type + Package)
+    // Nom du Type Minispec -> Définition Java (Type + Package) dans config
     private Map<String, JavaTypeDefinition> typeDefinitions = new HashMap<>();
 
     public static class JavaTypeDefinition {

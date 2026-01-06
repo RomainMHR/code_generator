@@ -1,16 +1,16 @@
 package type;
 
 public class CollectionType extends Type {
-    public enum Kind { LIST, SET, BAG, ARRAY }
+    public enum Format { LIST, SET, BAG, ARRAY }
     
-    private Kind kind;
+    private Format format;
     private Type elementType;
     private Integer minSize;
     private Integer maxSize;
 
     // Constructeur
-    public CollectionType(Kind kind, Type elementType, Integer min, Integer max) {
-        this.kind = kind;
+    public CollectionType(Format format, Type elementType, Integer min, Integer max) {
+        this.format = format;
         this.elementType = elementType;
         this.minSize = min;
         this.maxSize = max;
@@ -26,20 +26,20 @@ public class CollectionType extends Type {
 
     @Override
     public String getName() {
-        return kind.toString() + "<" + elementType.getName() + ">";
+        return format.toString() + "<" + elementType.getName() + ">";
     }
 
     @Override
     public boolean isCompatibleWith(Type other) {
         if (other instanceof CollectionType) {
             CollectionType otherCol = (CollectionType) other;
-            return this.kind == otherCol.kind && 
+            return this.format == otherCol.format && 
                    this.elementType.isCompatibleWith(otherCol.elementType);
         }
         return false;
     }
     
     public boolean isFixedSize() {
-        return kind == Kind.ARRAY;
+        return format == Format.ARRAY;
     }
 }
