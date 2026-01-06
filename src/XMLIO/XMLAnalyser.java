@@ -109,7 +109,7 @@ public class XMLAnalyser {
                 Integer max = (maxStr == null || maxStr.isEmpty() || maxStr.equals("*")) ? null : Integer.parseInt(maxStr);
                 
                 return new CollectionType(kind, coreType, min, max);
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 return coreType;
             }
         }
@@ -128,7 +128,7 @@ public class XMLAnalyser {
 
                 if (currentType instanceof UnresolvedReference) {
                     Type resolved = resolve((UnresolvedReference) currentType, validEntityNames);
-                    attr.setType(resolved); // Nécessite le setter dans Attribute
+                    attr.setType(resolved);
                 }
                 
                 else if (currentType instanceof CollectionType) {
@@ -137,7 +137,7 @@ public class XMLAnalyser {
                     
                     if (elemType instanceof UnresolvedReference) {
                         Type resolvedElem = resolve((UnresolvedReference) elemType, validEntityNames);
-                        col.setElementType(resolvedElem); // Nécessite le setter dans CollectionType
+                        col.setElementType(resolvedElem);
                     }
                 }
             }
@@ -159,7 +159,6 @@ public class XMLAnalyser {
     }
 
     private boolean isPrimitive(String typeName) {
-        // Stratégie : On regarde d'abord dans la config.
         if (this.config != null && this.config.isKnownType(typeName)) {
             return true;
         }
