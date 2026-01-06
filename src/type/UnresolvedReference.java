@@ -8,8 +8,6 @@ public class UnresolvedReference extends ReferenceType {
 
     @Override
     public boolean isCompatibleWith(Type other) {
-        // Une référence non résolue n'est jamais valide pour une comparaison de type
-        // Elle doit d'abord être résolue.
         return false;
     }
     

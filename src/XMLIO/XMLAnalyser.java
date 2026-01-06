@@ -164,10 +164,5 @@ public class XMLAnalyser {
             return true;
         }
         return false;
-        /*
-        // OPTIONNEL : On garde une sécurité "en dur" pour les types de base
-        // au cas où le fichier config.xml serait incomplet.
-        return typeName.equals("String") || typeName.equals("Integer") 
-            || typeName.equals("Boolean") || typeName.equals("Double");*/
     }
 }

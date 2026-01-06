@@ -3,6 +3,7 @@ package generation;
 import metaModel.*;
 import type.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class JavaGenerator extends Visitor {
@@ -26,6 +27,34 @@ public class JavaGenerator extends Visitor {
             buffer.append("\n----------------------\n");
         }
     }
+    
+    private void generateFullConstructor(Entity entity) {
+        List<Attribute> attrs = entity.getAttributes();
+        if (attrs.isEmpty()) {
+            return; // Le constructeur par défaut suffit
+        }
+        
+        buffer.append("    public ").append(entity.getName()).append("(");
+        
+        // Paramètres
+        for (int i = 0; i < attrs.size(); i++) {
+            Attribute attr = attrs.get(i);
+            String typeName = resolveJavaTypeName(attr.getType());
+            buffer.append(typeName).append(" ").append(attr.getName());
+            if (i < attrs.size() - 1) {
+                buffer.append(", ");
+            }
+        }
+        buffer.append(") {\n");
+        
+        // Affectations
+        for (Attribute attr : attrs) {
+            buffer.append("        this.").append(attr.getName())
+                  .append(" = ").append(attr.getName()).append(";\n");
+        }
+        
+        buffer.append("    }\n\n");
+    }
 
     public void visitEntityInModel(Entity entity, String modelName) {
         String javaPackage = config.getJavaPackageForModel(modelName);
@@ -36,20 +65,27 @@ public class JavaGenerator extends Visitor {
 
         generateImports(entity);
 
+        // Déclaration de la classe
         buffer.append("public class ").append(entity.getName());
         if (entity.getParentName() != null && !entity.getParentName().isEmpty()) {
             buffer.append(" extends ").append(entity.getParentName());
         }
         buffer.append(" {\n");
 
+        // Attributs
         this.generateMethods = false;
         for (Attribute attr : entity.getAttributes()) {
             attr.accept(this);
         }
         buffer.append("\n");
 
+        //Constructeur vide
         buffer.append("    public ").append(entity.getName()).append("() { }\n\n");
+        
+        //Constructeur complet
+        generateFullConstructor(entity);
 
+        // Getters et Setters
         this.generateMethods = true;
         for (Attribute attr : entity.getAttributes()) {
             attr.accept(this);

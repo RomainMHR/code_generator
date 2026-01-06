@@ -6,7 +6,7 @@ import java.util.List;
 public class Entity implements MinispecElement {
 	private String name;
 	private String parentName; // Pour l'héritage (Partie 4)
-	private List<Attribute> attributes; // Vos attributs
+	private List<Attribute> attributes;
 
 	public Entity() {
 		this.attributes = new ArrayList<>();
